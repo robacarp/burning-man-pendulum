@@ -1,7 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script type="text/javascript" src="ball.js"></script>
+    <script type="text/javascript" src="color.js"></script>
+    <script type="text/javascript" src="pendulum.js"></script>
+    <script type="text/javascript" src="point.js"></script>
+
+    <script type="text/javascript">
+var $canvas = null, $2d = null, $objects = []
+
+function setup(){
+  $canvas = document.getElementById('canvas');
+  $2d = canvas.getContext('2d');  // for later, maybe inspect the experimental-webgl context?
+
+  setInterval(draw, 30);
+}
+
+function draw(){
+  $2d.clearRect(0,0, 500,500);
+  for (i in $objects) {
+    if ($objects[i].increment)
+      $objects[i].increment();
+    if ($objects[i].draw)
+      $objects[i].draw($2d);
+  }
+}
+
+$objects.push( new pendulum( 100,100,70 ) );
+
+onload = setup;
+    </script>
   </head>
   <body>
+    <canvas id="canvas" width="500" height="500"></canvas>
   </body>
 </html>
