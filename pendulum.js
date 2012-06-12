@@ -1,9 +1,12 @@
-function pendulum(x,y,length,angle){
+function pendulum(x,y,z,length,angle){
   this.length = length == null ? 0 : length;
   this.angle = angle == null ? 0 : angle;
   this.position = new point(x,y);
   this.endpoint = new point();
-  this.ball = new ball( 0,0, 11);
+  this.ball = new ball( 0,0, 25 - z);
+  this.mass = 5
+  this.velocity = 3;
+  this.k = -9.8 * this.mass / this.length
 
   this.draw = pendulum_draw;
   this.calculate_endpoint = pendulum_calculate_endpoint;
@@ -24,14 +27,18 @@ function pendulum(x,y,length,angle){
   }
 
   function pendulum_calculate_endpoint(){
-    this.endpoint.x = Math.sin(Math.PI * (this.angle / 180)) * this.length + this.position.x;
-    this.endpoint.y = Math.cos(Math.PI * (this.angle / 180)) * this.length + this.position.y;
+    this.endpoint.x = Math.sin(this.angle) * this.length + this.position.x;
+    this.endpoint.y = Math.cos(this.angle) * this.length + this.position.y;
 
     this.ball.position.x = this.endpoint.x;
     this.ball.position.y = this.endpoint.y;
   }
 
   function pendulum_increment(){
-    this.angle ++;
-    //this.position.x ++;
+    //this.angle += Math.PI * (2 / 180);
+
+    var acceleration = this.k * Math.sin( this.angle )
+    this.velocity += acceleration * 0.99
+    this.angle += this.velocity * 0.010
   }
+
