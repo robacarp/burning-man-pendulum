@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript" src="algorithm1.js"></script>
-    <script type="text/javascript" src="ball.js"></script>
-    <script type="text/javascript" src="color.js"></script>
-    <script type="text/javascript" src="pendulum.js"></script>
-    <script type="text/javascript" src="point.js"></script>
-
+    <style type="text/css">
+      body {
+        background-color: #ddd;
+      }
+    </style>
     <script type="text/javascript">
-var $canvas = null, $2d = null, $objects = [], $timer = 0, $pendulums = []
+var $canvas = null, $2d = null, $objects = [], $timer = 0, $pendulums = [], $ticker = 0, $algorithms = []
 
 function setup(){
   $canvas = document.getElementById('canvas');
   $2d = canvas.getContext('2d');  // for later, maybe inspect the experimental-webgl context?
   $timer = setInterval(draw, 1);
 
-  for (i = 0; i < 7; i ++)
-    $pendulums.push( new pendulum( 650, 100, i, i * 50 + 300) );
+  for (i = 0; i < 15; i ++)
+    $pendulums.push( new pendulum( 650, 100, i, i * 15 + 300) );
 
   for (i in $pendulums)
     $objects.push( $pendulums[i] )
@@ -29,6 +28,7 @@ function setup(){
 }
 
 function draw(){
+  $ticker ++;
   colorit();
   $2d.clearRect(0,0, $canvas.width,$canvas.height);
   for (i in $objects) {
@@ -41,12 +41,18 @@ function draw(){
 
 function colorit(){
   for (i in $pendulums){
-    algorithm1(i, $objects[i].ball);
+    $algorithms[0]($objects[i].ball, i, $ticker);
   }
 }
 
 onload = setup;
     </script>
+    <script type="text/javascript" src="black-white.js"></script>
+    <script type="text/javascript" src="ball.js"></script>
+    <script type="text/javascript" src="color.js"></script>
+    <script type="text/javascript" src="pendulum.js"></script>
+    <script type="text/javascript" src="point.js"></script>
+
   </head>
   <body>
     <canvas id="canvas" width="1500" height="1500"></canvas>

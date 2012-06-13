@@ -4,7 +4,7 @@ function pendulum(x,y,z,length,angle){
   this.position = new point(x,y);
   this.endpoint = new point();
   this.ball = new ball( 0,0, 25 - z);
-  this.mass = 5
+  this.mass = 25
   this.velocity = 3;
   this.k = -9.8 * this.mass / this.length
 
