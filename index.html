@@ -7,24 +7,32 @@
       }
     </style>
     <script type="text/javascript">
-var $canvas = null, $2d = null, $objects = [], $timer = 0, $pendulums = [], $ticker = 0, $algorithms = []
+      //gamma = 160 seconds
+      //longest pendulum N = 51
+      //
+
+var $canvas = null, $2d = null, $objects = [], $timer = 0, $pendulums = [], $frame_delay = 25
 
 function setup(){
   $canvas = document.getElementById('canvas');
   $2d = canvas.getContext('2d');  // for later, maybe inspect the experimental-webgl context?
-  $timer = setInterval(draw, 1);
 
   for (i = 0; i < 15; i ++)
-    $pendulums.push( new pendulum( 650, 100, i, i * 15 + 300) );
+    $pendulums.push( new pendulum( 650, 100, i, 160, 51 - i ) );
 
   for (i in $pendulums)
     $objects.push( $pendulums[i] )
 
   // the "bar" at the top
   $objects.push( { x:650, y:100, draw: function(context){ 
+        context.beginPath();
         context.arc( this.x, this.y, 8 /* radius */, 0, Math.PI * 2, true );
         context.fill();
+        context.closePath();
       }});
+
+  draw();
+  $timer = setInterval(draw, $frame_delay);
 }
 
 function draw(){
@@ -55,6 +63,8 @@ onload = setup;
 
   </head>
   <body>
+    <a href="javascript:clearInterval($timer);">Killit</a>
+    <a href="javascript:$timer = setInterval(draw, $frame_delay);">Runit</a>
     <canvas id="canvas" width="1500" height="1500"></canvas>
   </body>
 </html>
