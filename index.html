@@ -11,7 +11,7 @@
       //longest pendulum N = 51
       //
 
-var $canvas = null, $2d = null, $objects = [], $timer = 0, $pendulums = [], $frame_delay = 25
+var $canvas = null, $2d = null, $objects = [], $timer = 0, $pendulums = [], $frame_delay = 25, $algorithms = [], $ticker = 0;
 
 function setup(){
   $canvas = document.getElementById('canvas');
@@ -55,6 +55,7 @@ function colorit(){
 
 onload = setup;
     </script>
+
     <script type="text/javascript" src="black-white.js"></script>
     <script type="text/javascript" src="ball.js"></script>
     <script type="text/javascript" src="color.js"></script>
