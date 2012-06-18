@@ -16,6 +16,11 @@ function ball( x,y,radius ){
 
     context.arc( this.position.x, this.position.y, this.radius, 0, Math.PI * 2, true );
 
+    if (this.stroke)
+      context.stroke();
+    else
+      context.fill();
+
     context.closePath();
 
     if (this.stroke)

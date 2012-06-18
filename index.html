@@ -6,18 +6,12 @@
         background-color: #ddd;
       }
     </style>
-    <script type="text/javascript" src="algorithm1.js"></script>
-    <script type="text/javascript" src="ball.js"></script>
-    <script type="text/javascript" src="color.js"></script>
-    <script type="text/javascript" src="pendulum.js"></script>
-    <script type="text/javascript" src="point.js"></script>
-
     <script type="text/javascript">
       //gamma = 160 seconds
       //longest pendulum N = 51
       //
 
-var $canvas = null, $2d = null, $objects = [], $timer = 0, $pendulums = [], $frame_delay = 25
+var $canvas = null, $2d = null, $objects = [], $timer = 0, $pendulums = [], $frame_delay = 25, $algorithms = [], $ticker = 0;
 
 function setup(){
   $canvas = document.getElementById('canvas');
@@ -42,7 +36,7 @@ function setup(){
 }
 
 function draw(){
-  //$ticker ++;
+  $ticker ++;
   colorit();
   $2d.clearRect(0,0, $canvas.width,$canvas.height);
   for (i in $objects) {
@@ -55,12 +49,19 @@ function draw(){
 
 function colorit(){
   for (i in $pendulums){
-    algorithm1(i, $objects[i].ball);
+    $algorithms[0]($objects[i].ball, i, $ticker);
   }
 }
 
 onload = setup;
     </script>
+
+    <script type="text/javascript" src="black-white.js"></script>
+    <script type="text/javascript" src="ball.js"></script>
+    <script type="text/javascript" src="color.js"></script>
+    <script type="text/javascript" src="pendulum.js"></script>
+    <script type="text/javascript" src="point.js"></script>
+
   </head>
   <body>
     <a href="javascript:clearInterval($timer);">Killit</a>
