@@ -1,11 +1,12 @@
 function pendulum(x,y,z,gamma,count){
-  this.angle = 4 * Math.PI / 5;
   this.position = new point(x,y);
   this.endpoint = new point();
   this.ball = new ball(0,0,15 + z);
 
+  this.angle = 0;
+  this.velocity = 0;
+
   this.mass = 25;
-  this.velocity = 3;
   this.length = 50;
   this.gamma = gamma == null ? 60 : gamma;
   this.count = count == null ? 60 : count;
@@ -20,6 +21,9 @@ function pendulum(x,y,z,gamma,count){
 }
 
   function pendulum_initialize(){
+    this.angle = 4 * Math.PI / 5;
+    this.velocity = 3;
+
     //period = 2pi * sqrt(L / g)
     var period = this.gamma / this.count;
     //period / 2pi = sqrt(L / g)

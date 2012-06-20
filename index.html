@@ -11,7 +11,19 @@
       //longest pendulum N = 51
       //
 
-var $canvas = null, $2d = null, $objects = [], $timer = 0, $pendulums = [], $frame_delay = 25, $algorithms = [], $ticker = 0;
+    //$GLOBALS
+    var $canvas = null, $2d = null;
+
+    //lists
+    var $objects = [], $pendulums = [], $algorithms = [];
+    //counters
+    var $timer = 0, $ticker = 0;
+
+    //parameters
+    var $frame_delay = 25;
+
+    //flags
+    var $movement = true, $colors = true;
 
 function setup(){
   $canvas = document.getElementById('canvas');
@@ -33,23 +45,41 @@ function setup(){
 
   draw();
   $timer = setInterval(draw, $frame_delay);
+
+  $movement = false;
+  sort();
 }
 
 function draw(){
+
   $ticker ++;
   colorit();
   $2d.clearRect(0,0, $canvas.width,$canvas.height);
   for (i in $objects) {
-    if ($objects[i].increment)
+    if ($movement && $objects[i].increment)
       $objects[i].increment();
+
     if ($objects[i].draw)
       $objects[i].draw($2d);
   }
 }
 
 function colorit(){
+  if (!$colors) return;
   for (i in $pendulums){
     $algorithms[1]($objects[i].ball, i, $ticker);
+  }
+}
+
+function sort(){
+  for (i in $pendulums){
+    $pendulums[i].angle = ((9 * i + 120) / 180) * Math.PI;
+  }
+}
+
+function reinitialize(){
+  for (i in $pendulums){
+    $pendulums[i].initialize();
   }
 }
 
@@ -67,8 +97,13 @@ onload = setup;
 
   </head>
   <body>
-    <a href="javascript:clearInterval($timer);">Killit</a>
-    <a href="javascript:$timer = setInterval(draw, $frame_delay);">Runit</a>
+    Everything: <a href="javascript:clearInterval($timer);">Stop</a> <a href="javascript:$timer = setInterval(draw, $frame_delay);">Run</a>
+    <br>
+    Movement: <a href="javascript:$movement = false;">Pause</a> <a href="javascript:$movement = true;">Play</a>
+    <br>
+    Position: <a href="javascript:sort();">Sort</a> <a href="javascript:reinitialize();">Reinit</a>
+    <br>
+    Colors: <a href="javascript:$colors = false;">Pause</a> <a href="javascript:$colors = true;">Play</a>
     <canvas id="canvas" width="1500" height="1500"></canvas>
   </body>
 </html>
