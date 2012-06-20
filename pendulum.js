@@ -18,6 +18,7 @@ function pendulum(x,y,z,gamma,count){
   this.initialize();
   this.calculate_endpoint();
 }
+
   function pendulum_initialize(){
     //period = 2pi * sqrt(L / g)
     var period = this.gamma / this.count;

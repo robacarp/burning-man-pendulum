@@ -4,6 +4,7 @@ function ball( x,y,radius ){
   this.color = new color();
   this.draw = ball_draw;
   this.stroke = false;
+  this.fill = true;
 }
 
   function ball_draw(context){
@@ -11,21 +12,15 @@ function ball( x,y,radius ){
 
     if (this.stroke)
       context.strokeStyle = this.color.to_s();
-    else
+    if (this.fill)
       context.fillStyle = this.color.to_s()
 
     context.arc( this.position.x, this.position.y, this.radius, 0, Math.PI * 2, true );
 
     if (this.stroke)
       context.stroke();
-    else
+    if (this.fill)
       context.fill();
 
     context.closePath();
-
-    if (this.stroke)
-      context.stroke();
-    else
-      context.fill();
-
   }

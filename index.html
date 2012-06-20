@@ -17,19 +17,19 @@ function setup(){
   $canvas = document.getElementById('canvas');
   $2d = canvas.getContext('2d');  // for later, maybe inspect the experimental-webgl context?
 
-  for (i = 0; i < 15; i ++)
-    $pendulums.push( new pendulum( 650, 100, i, 160, 51 - i ) );
+  var j;
+  for (i = 0; i < 15; i ++) {
+    j = new pendulum( 650, 100, i, 160, 51 - i )
+    $pendulums.push( j );
+  }
 
   for (i in $pendulums)
-    $objects.push( $pendulums[i] )
+    $objects.push( $pendulums[i] );
 
   // the "bar" at the top
-  $objects.push( { x:650, y:100, draw: function(context){ 
-        context.beginPath();
-        context.arc( this.x, this.y, 8 /* radius */, 0, Math.PI * 2, true );
-        context.fill();
-        context.closePath();
-      }});
+  var b = new ball(650,100,5);
+  b.fill = true;
+  $objects.push( b );
 
   draw();
   $timer = setInterval(draw, $frame_delay);
@@ -49,18 +49,21 @@ function draw(){
 
 function colorit(){
   for (i in $pendulums){
-    $algorithms[0]($objects[i].ball, i, $ticker);
+    $algorithms[1]($objects[i].ball, i, $ticker);
   }
 }
 
 onload = setup;
     </script>
 
-    <script type="text/javascript" src="black-white.js"></script>
     <script type="text/javascript" src="ball.js"></script>
     <script type="text/javascript" src="color.js"></script>
     <script type="text/javascript" src="pendulum.js"></script>
     <script type="text/javascript" src="point.js"></script>
+
+    <!-- coloring algorithms -->
+    <script type="text/javascript" src="black-white.js"></script>
+    <script type="text/javascript" src="rainbow.js"></script>
 
   </head>
   <body>
