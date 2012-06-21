@@ -5,7 +5,7 @@ function rainbow(ball, position, tick){
   tick += 50 * position;
 
   //just make the hue a function of time
-  hue = (tick % 255) / 255;
+  hue = (tick % 155) / 155;
 
   //doit
   ball.color.hsl( hue , 0.8, 0.8 );
