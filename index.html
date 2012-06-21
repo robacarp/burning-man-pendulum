@@ -97,7 +97,7 @@ onload = setup;
 
   </head>
   <body>
-    Everything: <a href="javascript:clearInterval($timer);">Stop</a> <a href="javascript:$timer = setInterval(draw, $frame_delay);">Run</a>
+    Everything: <a href="javascript:clearInterval($timer);">Stop</a> <a href="javascript:clearInterval($timer); $timer = setInterval(draw, $frame_delay);">Run</a>
     <br>
     Movement: <a href="javascript:$movement = false;">Pause</a> <a href="javascript:$movement = true;">Play</a>
     <br>
