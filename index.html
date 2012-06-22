@@ -4,6 +4,20 @@
     <style type="text/css">
       body {
         background-color: #ddd;
+        margin:0;
+        padding:0;
+        font-size:16px;
+        line-height:1.3em;
+        font-family:Georgia;
+      }
+
+      #controls {
+        position: absolute;
+        top:0;
+        left:0;
+        background-color:#ddd;
+        padding:5px;
+        border:1px solid #bbb;
       }
     </style>
     <script type="text/javascript">
@@ -20,67 +34,93 @@
     var $timer = 0, $ticker = 0;
 
     //parameters
-    var $frame_delay = 25;
+    var $frame_delay = 25, $algorithm = 1;
 
     //flags
     var $movement = true, $colors = true;
 
-function setup(){
-  $canvas = document.getElementById('canvas');
-  $2d = canvas.getContext('2d');  // for later, maybe inspect the experimental-webgl context?
+    function setup(){
+      $canvas = document.getElementById('canvas');
+      $2d = canvas.getContext('2d');  // for later, maybe inspect the experimental-webgl context?
 
-  var j;
-  for (i = 0; i < 15; i ++) {
-    j = new pendulum( 650, 100, i, 160, 51 - i )
-    $pendulums.push( j );
-  }
+      // create the "ground"
+      $objects.push({
+        draw: function(context){
+          context.beginPath();
+          context.moveTo(0,0);
+          context.lineTo($canvas.width, 0);
+          context.lineTo($canvas.width, $canvas.height);
+          context.lineTo(0, $canvas.height);
+          context.lineTo(0,0);
+          context.fill();
+          context.closePath();
+        }
+      });
 
-  for (i in $pendulums)
-    $objects.push( $pendulums[i] );
+      // build out some pendulums
+      var j;
+      for (i = 0; i < 15; i ++) {
+        j = new pendulum( 650, 100, i, 160, 51 - i )
+        $pendulums.push( j );
+      }
 
-  // the "bar" at the top
-  var b = new ball(650,100,5);
-  b.fill = true;
-  $objects.push( b );
+      for (i in $pendulums)
+        $objects.push( $pendulums[i] );
 
-  draw();
-  $timer = setInterval(draw, $frame_delay);
-}
+      // hang the pendulums from a  "bar" at the top
+      var b = new ball(650,100,5);
+      b.fill = true;
+      $objects.push( b );
 
-function draw(){
+      //make a picker for the algorithms
+      var picker = document.getElementById('picker');
+      for (i in $algorithms)
+        picker.options[picker.options.length] = new Option($algorithms[i].name,i);
 
-  $ticker ++;
-  colorit();
-  $2d.clearRect(0,0, $canvas.width,$canvas.height);
-  for (i in $objects) {
-    if ($movement && $objects[i].increment)
-      $objects[i].increment();
+      //event the picker
+      picker.onchange = function(e){
+        $algorithm = e.target.options[e.target.selectedIndex].value;
+      }
 
-    if ($objects[i].draw)
-      $objects[i].draw($2d);
-  }
-}
 
-function colorit(){
-  if (!$colors) return;
-  for (i in $pendulums){
-    $algorithms[1]($objects[i].ball, i, $ticker);
-  }
-}
+      draw();
+      $timer = setInterval(draw, $frame_delay);
+    }
 
-function sort(){
-  for (i in $pendulums){
-    $pendulums[i].angle = ((9 * i + 120) / 180) * Math.PI;
-  }
-}
+    function draw(){
 
-function reinitialize(){
-  for (i in $pendulums){
-    $pendulums[i].initialize();
-  }
-}
+      $ticker ++;
+      colorit();
+      $2d.clearRect(0,0, $canvas.width,$canvas.height);
+      for (i in $objects) {
+        if ($movement && $objects[i].increment)
+          $objects[i].increment();
 
-onload = setup;
+        if ($objects[i].draw)
+          $objects[i].draw($2d);
+      }
+    }
+
+    function colorit(){
+      if (!$colors) return;
+      for (i in $pendulums){
+        $algorithms[$algorithm]($pendulums[i].ball, i, $ticker);
+      }
+    }
+
+    function sort(){
+      for (i in $pendulums){
+        $pendulums[i].angle = ((9 * i + 120) / 180) * Math.PI;
+      }
+    }
+
+    function reinitialize(){
+      for (i in $pendulums){
+        $pendulums[i].initialize();
+      }
+    }
+
+    onload = setup;
     </script>
 
     <script type="text/javascript" src="ball.js"></script>
@@ -94,13 +134,17 @@ onload = setup;
 
   </head>
   <body>
-    Everything: <a href="javascript:clearInterval($timer);">Stop</a> <a href="javascript:clearInterval($timer); $timer = setInterval(draw, $frame_delay);">Run</a>
-    <br>
-    Movement: <a href="javascript:$movement = false;">Pause</a> <a href="javascript:$movement = true;">Play</a>
-    <br>
-    Position: <a href="javascript:sort();">Sort</a> <a href="javascript:reinitialize();">Reinit</a>
-    <br>
-    Colors: <a href="javascript:$colors = false;">Pause</a> <a href="javascript:$colors = true;">Play</a>
+    <div id="controls">
+      Everything: <a href="javascript:clearInterval($timer);">Stop</a> <a href="javascript:clearInterval($timer); $timer = setInterval(draw, $frame_delay);">Run</a>
+      <br>
+      Movement: <a href="javascript:$movement = false;">Pause</a> <a href="javascript:$movement = true;">Play</a>
+      <br>
+      Position: <a href="javascript:sort();">Sort</a> <a href="javascript:reinitialize();">Reinit</a>
+      <br>
+      Colors: <a href="javascript:$colors = false;">Pause</a> <a href="javascript:$colors = true;">Play</a>
+      <br>
+      Coloring Algorithm: <select id="picker"></select>
+    </div>
     <canvas id="canvas" width="1500" height="1500"></canvas>
   </body>
 </html>

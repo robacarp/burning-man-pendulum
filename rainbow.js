@@ -8,7 +8,7 @@ function rainbow(ball, position, tick){
   hue = (tick % 155) / 155;
 
   //doit
-  ball.color.hsl( hue , 0.8, 0.8 );
+  ball.color.hsl( hue , 1, 0.5 );
 }
 
 if (window.$algorithms)
