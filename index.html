@@ -43,15 +43,28 @@
       $canvas = document.getElementById('canvas');
       $2d = canvas.getContext('2d');  // for later, maybe inspect the experimental-webgl context?
 
-      // create the "ground"
+      // create the "horizon"
       $objects.push({
         draw: function(context){
           context.beginPath();
           context.moveTo(0,0);
+          context.fillStyle = 'rgb(0,0,0)';
           context.lineTo($canvas.width, 0);
           context.lineTo($canvas.width, $canvas.height);
           context.lineTo(0, $canvas.height);
           context.lineTo(0,0);
+          context.fill();
+
+          var gradient = context.createLinearGradient(0,$canvas.height,0,0);
+          gradient.addColorStop(0, 'rgb(60,100,180)');
+          gradient.addColorStop(0.9, 'rgb(0,20,100)');
+          context.fillStyle = gradient;
+          var midline = 350;
+          context.moveTo(0,midline);
+          context.lineTo(0,$canvas.height);
+          context.lineTo($canvas.width, $canvas.height);
+          context.lineTo($canvas.width, midline);
+          context.lineTo(0,midline);
           context.fill();
           context.closePath();
         }
@@ -145,6 +158,6 @@
       <br>
       Coloring Algorithm: <select id="picker"></select>
     </div>
-    <canvas id="canvas" width="1500" height="1500"></canvas>
+    <canvas id="canvas" width="1400" height="800"></canvas>
   </body>
 </html>
