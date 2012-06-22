@@ -9,6 +9,10 @@
         font-size:16px;
         line-height:1.3em;
         font-family:Georgia;
+        /* this makes my olde laptop cry...
+         * background: -webkit-linear-gradient( rgb(0,20,100), rgb(60,100,180) 40%, rgb(0,0,0) 41%, rgb(80,80,80));
+         *
+         */
       }
 
       #controls {
@@ -34,7 +38,7 @@
     var $timer = 0, $ticker = 0;
 
     //parameters
-    var $frame_delay = 25, $algorithm = 1;
+    var $frame_delay = 25, $algorithm = 0;
 
     //flags
     var $movement = true, $colors = true;
@@ -42,33 +46,6 @@
     function setup(){
       $canvas = document.getElementById('canvas');
       $2d = canvas.getContext('2d');  // for later, maybe inspect the experimental-webgl context?
-
-      // create the "horizon"
-      $objects.push({
-        draw: function(context){
-          context.beginPath();
-          context.moveTo(0,0);
-          context.fillStyle = 'rgb(0,0,0)';
-          context.lineTo($canvas.width, 0);
-          context.lineTo($canvas.width, $canvas.height);
-          context.lineTo(0, $canvas.height);
-          context.lineTo(0,0);
-          context.fill();
-
-          var gradient = context.createLinearGradient(0,$canvas.height,0,0);
-          gradient.addColorStop(0, 'rgb(60,100,180)');
-          gradient.addColorStop(0.9, 'rgb(0,20,100)');
-          context.fillStyle = gradient;
-          var midline = 350;
-          context.moveTo(0,midline);
-          context.lineTo(0,$canvas.height);
-          context.lineTo($canvas.width, $canvas.height);
-          context.lineTo($canvas.width, midline);
-          context.lineTo(0,midline);
-          context.fill();
-          context.closePath();
-        }
-      });
 
       // build out some pendulums
       var j;
@@ -93,6 +70,16 @@
       //event the picker
       picker.onchange = function(e){
         $algorithm = e.target.options[e.target.selectedIndex].value;
+      }
+
+      //event the background chooser
+      document.getElementById('gradienter').onclick = function(e){
+        var ele = document.body;
+        if (e.target.checked){
+          ele.style.background = '-webkit-linear-gradient( rgb(0,20,100), rgb(60,100,180) 40%, rgb(0,0,0) 41%, rgb(80,80,80))';
+        } else {
+          ele.style.background = 'none';
+        }
       }
 
 
@@ -157,6 +144,11 @@
       Colors: <a href="javascript:$colors = false;">Pause</a> <a href="javascript:$colors = true;">Play</a>
       <br>
       Coloring Algorithm: <select id="picker"></select>
+      <br>
+      <label for="gradienter">
+        <input type="checkbox" id="gradienter">
+        Draw a background gradient for more realism.
+      </label>
     </div>
     <canvas id="canvas" width="1400" height="800"></canvas>
   </body>
