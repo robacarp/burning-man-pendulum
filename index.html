@@ -73,7 +73,8 @@
       }
 
       //event the background chooser
-      document.getElementById('gradienter').onclick = function(e){
+      var gradienter = document.getElementById('gradienter');
+      gradienter.onclick = function(e){
         var ele = document.body;
         if (e.target.checked){
           ele.style.background = '-webkit-linear-gradient( rgb(0,20,100), rgb(60,100,180) 40%, rgb(0,0,0) 41%, rgb(80,80,80))';
@@ -81,6 +82,15 @@
           ele.style.background = 'none';
         }
       }
+
+      //default the background when on github
+      if (window.location.href.indexOf('github') > -1){
+        //dirty, dirty, dirty hack...
+        gradienter.checked = true;
+        gradienter.onclick({target: gradienter});
+      }
+
+
 
 
       draw();
@@ -128,9 +138,9 @@
     <script type="text/javascript" src="pendulum.js"></script>
     <script type="text/javascript" src="point.js"></script>
 
-    <!-- coloring algorithms -->
-    <script type="text/javascript" src="black-white.js"></script>
+    <!-- coloring algorithms...in order that you want them listed in the box, first is default -->
     <script type="text/javascript" src="rainbow.js"></script>
+    <script type="text/javascript" src="black-white.js"></script>
 
   </head>
   <body>
