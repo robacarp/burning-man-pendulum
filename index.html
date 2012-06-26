@@ -30,7 +30,7 @@
       //
 
     //$GLOBALS
-    var $canvas = null, $2d = null;
+    var $canvas = null, $2d = null, $num_pendulums = 15;
 
     //lists
     var $objects = [], $pendulums = [], $algorithms = [];
@@ -49,7 +49,7 @@
 
       // build out some pendulums
       var j;
-      for (i = 0; i < 15; i ++) {
+      for (i = 0; i < $num_pendulums; i ++) {
         j = new pendulum( 650, 100, i, 160, 51 - i )
         $pendulums.push( j );
       }
@@ -88,6 +88,9 @@
         //dirty, dirty, dirty hack...
         gradienter.checked = true;
         gradienter.onclick({target: gradienter});
+      } else {
+        $movement = false;
+        sort();
       }
 
 
