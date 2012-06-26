@@ -113,8 +113,12 @@
 
     function colorit(){
       if (!$colors) return;
+      var algorithm = $algorithms[$algorithm];
+      if (algorithm.callback != null)
+        algorithm = algorithm.callback;
+
       for (i in $pendulums){
-        $algorithms[$algorithm]($pendulums[i].ball, i, $ticker);
+        algorithm($pendulums[i].ball, i, $ticker);
       }
     }
 
@@ -139,8 +143,10 @@
     <script type="text/javascript" src="point.js"></script>
 
     <!-- coloring algorithms...in order that you want them listed in the box, first is default -->
+    <script type="text/javascript" src="pulsar.js"></script>
     <script type="text/javascript" src="rainbow.js"></script>
     <script type="text/javascript" src="black-white.js"></script>
+
 
   </head>
   <body>
