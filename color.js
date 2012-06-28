@@ -10,9 +10,15 @@ function color(red, green, blue, alpha){
 }
 
   function color_rgb(r, g, b){
-    this.red = r == null? this.red : r;
-    this.green = g == null? this.green : g;
-    this.blue = b == null? this.blue : b;
+    if (r instanceof color){
+      this.red = r.red;
+      this.green = r.green;
+      this.blue = r.blue;
+    } else {
+      this.red = r == null? this.red : r;
+      this.green = g == null? this.green : g;
+      this.blue = b == null? this.blue : b;
+    }
 
     return [this.red, this.green, this.blue];
   }
