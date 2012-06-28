@@ -83,12 +83,6 @@
         }
       }
 
-      //default the background when on github
-      if (window.location.href.indexOf('github') > -1){
-        //dirty, dirty, dirty hack...
-        gradienter.checked = true;
-        gradienter.onclick({target: gradienter});
-      }
 
       var querystring = location.href.substring( location.href.indexOf('?') + 1 );
       querystring = querystring.split('&');
@@ -100,10 +94,17 @@
         query_params[ param[0] ] = param[1];
       }
 
-      if (query_params.stopped){
+      if (query_params.stopped && query_params.stopped == 'true'){
         $movement = false;
         sort();
       }
+
+      if (query_params.gradient && query_params.gradient == 'false'){
+        gradienter.checked = false;
+      }
+      //dirty, dirty, dirty hack...
+      gradienter.onclick({target: gradienter});
+
 
       draw();
       $timer = setInterval(draw, $frame_delay);
@@ -155,9 +156,11 @@
     <script type="text/javascript" src="point.js"></script>
 
     <!-- coloring algorithms...in order that you want them listed in the box, first is default -->
-    <script type="text/javascript" src="pulsar.js"></script>
-    <script type="text/javascript" src="rainbow.js"></script>
-    <script type="text/javascript" src="black-white.js"></script>
+    <script type="text/javascript" src="algorithms/pulse.js"></script>
+    <script type="text/javascript" src="algorithms/pink.js"></script>
+    <script type="text/javascript" src="algorithms/pulsar.js"></script>
+    <script type="text/javascript" src="algorithms/rainbow.js"></script>
+    <script type="text/javascript" src="algorithms/black-white.js"></script>
 
 
   </head>
@@ -174,7 +177,7 @@
       Coloring Algorithm: <select id="picker"></select>
       <br>
       <label for="gradienter">
-        <input type="checkbox" id="gradienter">
+        <input type="checkbox" id="gradienter" checked>
         Draw a background gradient for more realism.
       </label>
     </div>

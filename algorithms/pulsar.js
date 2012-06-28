@@ -19,7 +19,7 @@ function pulsar(){
 
   this.pulses = [];
   for (i = 0; i < $num_pendulums; i++)
-    this.pulses[i] = {on: false, fixed: false, decay: 10}
+    this.pulses[i] = new pulse();
 
 
   this.tick = pulsar_tick;
@@ -42,16 +42,19 @@ function pulsar_tick(ball, position, tick){
     this.increment_pulses(ball, position, tick);
   }
 
-  ball.color.rgb(45,45,45);
+  //ball.color.hsl(0.3,0.85,0.7);
+  ball.color.rgb(100,255,180);
 
   if (this.pulses[position].on){
-    ball.color.rgb(155,155,155);
+    ball.color.rgb(this.pulses[position].color);
   }
 
 }
 
 function pulsar_new_pulse(){
-  this.pulses[this.pulses.length - 1] = {on: true, fixed: false, decay: 10}
+  var p = new pulse();
+  p.on = true;
+  this.pulses[this.pulses.length - 1] = p;
 }
 
 function pulsar_increment_pulses(ball, position, tick){
@@ -64,14 +67,9 @@ function pulsar_increment_pulses(ball, position, tick){
       }
 
       if (this.pulses[i].fixed) {
-        this.pulses[i].decay --;
-
-        if (this.pulses[i].decay < 0)
-          this.pulses[i] = {on: false, fixed: false, decay: 10}
-
+        this.pulses[i].decay();
         continue;
       }
-
 
       if (this.pulses[i].on){
         if (!this.pulses[i - 1].on) {
