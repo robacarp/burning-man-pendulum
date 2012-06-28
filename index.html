@@ -130,7 +130,7 @@
       if (algorithm.callback != null)
         algorithm = algorithm.callback;
 
-      for (i in $pendulums){
+      for (i = 0; i < $pendulums.length; i ++){
         algorithm($pendulums[i].ball, i, $ticker);
       }
     }
