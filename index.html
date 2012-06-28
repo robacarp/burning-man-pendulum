@@ -88,13 +88,22 @@
         //dirty, dirty, dirty hack...
         gradienter.checked = true;
         gradienter.onclick({target: gradienter});
-      } else {
+      }
+
+      var querystring = location.href.substring( location.href.indexOf('?') + 1 );
+      querystring = querystring.split('&');
+      query_params = {};
+      var param;
+      for (i in querystring) {
+        param = querystring[i].split('=');
+        if (param.length < 2) continue;
+        query_params[ param[0] ] = param[1];
+      }
+
+      if (query_params.stopped){
         $movement = false;
         sort();
       }
-
-
-
 
       draw();
       $timer = setInterval(draw, $frame_delay);
